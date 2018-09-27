@@ -52,4 +52,8 @@ __END__
 
 YAML::PP::LibYAML::Parser - Parser for YAML::PP::LibYAML
 
+=head1 DESCRIPTION
+
+L<YAML::PP::LibYAML::Parser> is a subclass of L<YAML::PP::Parser>.
+
 =cut

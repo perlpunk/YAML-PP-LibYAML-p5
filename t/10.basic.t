@@ -1,12 +1,11 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use 5.010;
 
 use Test::More;
 use YAML::PP;
+use YAML::PP::LibYAML;
 use YAML::PP::LibYAML::Parser;
-use YAML::LibYAML::API;
 
 my $events = [];
 my $yaml = <<'EOM';
@@ -16,7 +15,8 @@ FOO: *X
 flow: { "a":23 }
 EOM
 
-my $yp = YAML::PP->new( parser => YAML::PP::LibYAML::Parser->new );
+
+my $yp = YAML::PP::LibYAML->new;
 
 my $data = $yp->load_string($yaml);
 my $expected = {
