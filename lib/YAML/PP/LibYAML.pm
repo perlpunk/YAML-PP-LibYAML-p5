@@ -8,6 +8,8 @@ our $VERSION = '0.000'; # VERSION
 use base qw/ YAML::PP Exporter /;
 our @EXPORT_OK = qw/ Load Dump LoadFile DumpFile /;
 
+use YAML::PP::LibYAML::Parser;
+
 sub new {
     my ($class, %args) = @_;
 
