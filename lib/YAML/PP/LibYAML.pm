@@ -28,7 +28,6 @@ sub Load {
 
 sub LoadFile {
     my ($file) = @_;
-    die "Not implemented yet";
     YAML::PP::LibYAML->new->load_file($file);
 }
 

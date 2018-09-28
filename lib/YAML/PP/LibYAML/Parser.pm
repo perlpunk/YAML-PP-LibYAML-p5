@@ -32,9 +32,10 @@ sub set_reader {
 sub parse {
     my ($self) = @_;
     my $reader = $self->reader;
+    # TODO let XS read file/filehandle directly
     my $yaml = $reader->read;
     my $events = [];
-    my $test = YAML::LibYAML::API::XS::parse_events($yaml, $events);
+    my $test = YAML::LibYAML::API::XS::parse_string_events($yaml, $events);
     for my $info (@$events) {
         my $name = $info->{name};
         $self->callback->( $self, $name => $info );
