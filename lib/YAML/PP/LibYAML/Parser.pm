@@ -7,6 +7,8 @@ our $VERSION = '0.000'; # VERSION
 
 use YAML::LibYAML::API::XS;
 use YAML::PP::Reader;
+use Scalar::Util qw/ openhandle /;
+
 use base 'YAML::PP::Parser';
 
 sub new {
@@ -32,10 +34,19 @@ sub set_reader {
 sub parse {
     my ($self) = @_;
     my $reader = $self->reader;
-    # TODO let XS read file/filehandle directly
-    my $yaml = $reader->read;
     my $events = [];
-    my $test = YAML::LibYAML::API::XS::parse_string_events($yaml, $events);
+    if ($reader->can('open_handle')) {
+        if (openhandle($reader->input)) {
+            my $test = YAML::LibYAML::API::XS::parse_filehandle_events($reader->open_handle, $events);
+        }
+        else {
+            my $test = YAML::LibYAML::API::XS::parse_file_events($reader->input, $events);
+        }
+    }
+    else {
+        my $yaml = $reader->read;
+        my $test = YAML::LibYAML::API::XS::parse_string_events($yaml, $events);
+    }
     for my $info (@$events) {
         my $name = $info->{name};
         $self->callback->( $self, $name => $info );

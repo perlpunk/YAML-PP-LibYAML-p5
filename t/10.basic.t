@@ -39,18 +39,12 @@ my $error = $@;
 cmp_ok($error, '=~', qr{did not find expected key}, "Invalid YAML - expected error message");
 
 my $file = "$Bin/data/simple.yaml";
-undef $data;
-eval {
-    $data = $yp->load_file($file);
-};
+$data = $yp->load_file($file);
 $expected = { a => "b" };
 is_deeply($data, $expected, "load_file data like expected");
 
 open my $fh, '<', $file or die $!;
-undef $data;
-eval {
-    $data = $yp->load_file($fh);
-};
+$data = $yp->load_file($fh);
 close $fh;
 is_deeply($data, $expected, "load_file(filehandle) data like expected");
 
