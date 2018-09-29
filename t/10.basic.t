@@ -48,4 +48,32 @@ $data = $yp->load_file($fh);
 close $fh;
 is_deeply($data, $expected, "load_file(filehandle) data like expected");
 
+
+$data = { a => 'b' };
+$yaml = <<'EOM';
+---
+a: b
+EOM
+my $dump = $yp->dump_string($data);
+cmp_ok($dump, 'eq', $yaml, "dump_string");
+
+$yp->dump_file("$Bin/data/simple.yaml.out", $data);
+open $fh, '<', "$Bin/data/simple.yaml.out" or die $!;
+$dump = do { local $/; <$fh> };
+close $fh;
+cmp_ok($dump, 'eq', $yaml, "dump_file");
+
+open $fh, '>', "$Bin/data/simple.yaml.out" or die $!;
+$yp->dump_file($fh, $data);
+close $fh;
+
+open $fh, '<', "$Bin/data/simple.yaml.out" or die $!;
+$dump = do { local $/; <$fh> };
+close $fh;
+cmp_ok($dump, 'eq', $yaml, "dump_file(filehandle)");
+
 done_testing;
+
+END {
+    unlink "$Bin/data/simple.yaml.out";
+}

@@ -9,12 +9,14 @@ use base qw/ YAML::PP Exporter /;
 our @EXPORT_OK = qw/ Load Dump LoadFile DumpFile /;
 
 use YAML::PP::LibYAML::Parser;
+use YAML::PP::LibYAML::Emitter;
 
 sub new {
     my ($class, %args) = @_;
 
     my $self = $class->SUPER::new(
         parser => YAML::PP::LibYAML::Parser->new,
+        emitter => YAML::PP::LibYAML::Emitter->new,
         %args,
     );
     return $self;
@@ -33,13 +35,11 @@ sub LoadFile {
 
 sub Dump {
     my (@data) = @_;
-    die "Not implemented yet";
     YAML::PP::LibYAML->new->dump_string(@data);
 }
 
 sub DumpFile {
     my ($file, @data) = @_;
-    die "Not implemented yet";
     YAML::PP::LibYAML->new->dump_file($file, @data);
 }
 
