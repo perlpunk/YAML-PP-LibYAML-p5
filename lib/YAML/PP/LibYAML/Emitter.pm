@@ -101,3 +101,17 @@ sub stream_end_event {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+YAML::PP::LibYAML::Emitter - Emitter for YAML::PP::LibYAML
+
+=head1 DESCRIPTION
+
+L<YAML::PP::LibYAML::Emitter> is a subclass of L<YAML::PP::Emitter>.
+
+=cut
