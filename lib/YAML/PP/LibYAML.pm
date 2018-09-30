@@ -62,6 +62,7 @@ YAML::PP::LibYAML - Faster parsing for YAML::PP
     my $yp = YAML::PP::LibYAML->new;
     my @docs = $yp->load_string($yaml);
 
+    # Legacy interface
     use YAML::PP::LibYAML qw/ Load /;
     my @docs = Load($yaml);
 
@@ -114,6 +115,10 @@ it's still much slower than L<YAML::XS>. Benchmarks will follow.
 
 Constructor, works like L<YAML::PP::new> but adds L<YAML::PP::LibYAML::Parser>
 by default.
+
+=item load_string, load_file, dump_string, dump_file
+
+Work like in L<YAML::PP>
 
 =back
 
