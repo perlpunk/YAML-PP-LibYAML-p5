@@ -16,7 +16,9 @@ sub new {
 
     my $self = $class->SUPER::new(
         parser => YAML::PP::LibYAML::Parser->new,
-        emitter => YAML::PP::LibYAML::Emitter->new,
+        emitter => YAML::PP::LibYAML::Emitter->new(
+            indent => delete $args{indent},
+        ),
         %args,
     );
     return $self;
