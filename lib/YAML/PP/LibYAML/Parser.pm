@@ -33,6 +33,14 @@ sub set_reader {
     $self->{reader} = $reader;
 }
 
+sub xsparser {
+    my ($self, $xsparser) = @_;
+    if (@_ == 2) {
+        return $self->{xsparser} = $xsparser;
+    }
+    return $self->{xsparser};
+}
+
 sub parse {
     my ($self) = @_;
     my $reader = $self->reader;
@@ -56,16 +64,18 @@ sub parse {
             my ($event) = @_;
             $orig_cb->($self, $event->{name}, $event);
         };
-        my $parser = YAML::LibYAML::API->new(
-            callback => $cb,
-        );
+        my $parser = $self->xsparser;
+        unless ($parser) {
+            $parser = YAML::LibYAML::API->new(
+                callback => $cb,
+            );
+            $self->xsparser($parser);
+        }
         my $yaml = $reader->read;
         $parser->parse_callback($yaml);
-        $parser->parser_delete;
         return;
     }
 }
-
 
 1;
 
