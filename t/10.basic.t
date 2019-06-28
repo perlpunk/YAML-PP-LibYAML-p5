@@ -7,6 +7,7 @@ use FindBin '$Bin';
 use YAML::PP;
 use YAML::PP::LibYAML;
 use YAML::PP::LibYAML::Parser;
+use Data::Dumper;
 
 my $events = [];
 my $yaml = <<'EOM';
@@ -14,12 +15,15 @@ foo: &X bar
 k: !!int "23"
 FOO: *X
 flow: { "a":23 }
+bool: true
 EOM
 
 
 my $yp = YAML::PP::LibYAML->new;
 
 my $data = $yp->load_string($yaml);
+warn __PACKAGE__.':'.__LINE__.$".Data::Dumper->Dump([$data], ['data']);
+exit;
 my $expected = {
     foo => 'bar',
     k => 23,

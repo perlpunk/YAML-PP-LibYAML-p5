@@ -5,9 +5,11 @@ use warnings;
 
 our $VERSION = '0.000'; # VERSION
 
+use YAML::LibYAML::API;
 use YAML::LibYAML::API::XS;
 use YAML::PP::Reader;
 use Scalar::Util qw/ openhandle /;
+use Data::Dumper;
 
 use base 'YAML::PP::Parser';
 
@@ -35,6 +37,7 @@ sub parse {
     my ($self) = @_;
     my $reader = $self->reader;
     my $events = [];
+    warn __PACKAGE__.':'.__LINE__.": ========== parse()\n";
     if ($reader->can('open_handle')) {
         if (openhandle($reader->input)) {
             my $test = YAML::LibYAML::API::XS::parse_filehandle_events($reader->open_handle, $events);
@@ -44,8 +47,18 @@ sub parse {
         }
     }
     else {
+        warn __PACKAGE__.':'.__LINE__.": ========== parse string()\n";
+        my $orig_cb = $self->callback;
+        my $cb = sub {
+            my ($event) = @_;
+            $orig_cb->($self, $event->{name}, $event);
+        };
+        my $parser = YAML::LibYAML::API->new(
+            callback => $cb,
+        );
         my $yaml = $reader->read;
-        my $test = YAML::LibYAML::API::XS::parse_string_events($yaml, $events);
+        $parser->parse_callback($yaml);
+        return;
     }
     for my $info (@$events) {
         my $name = $info->{name};
