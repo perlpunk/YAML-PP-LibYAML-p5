@@ -17,6 +17,7 @@ my %WriteMakefileArgs = (
   "MIN_PERL_VERSION" => "5.008000",
   "NAME" => "YAML::PP::LibYAML",
   "PREREQ_PM" => {
+    "Data::Dumper" => 0,
     "Exporter" => 0,
     "Scalar::Util" => 0,
     "YAML::LibYAML::API" => "0.005",
@@ -38,7 +39,7 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.98",
     "blib" => "1.01"
   },
-  "VERSION" => "0.003",
+  "VERSION" => "0.003_001",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -46,6 +47,7 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Data::Dumper" => 0,
   "Exporter" => 0,
   "File::Spec" => 0,
   "FindBin" => 0,
