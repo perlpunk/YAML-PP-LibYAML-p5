@@ -36,18 +36,21 @@ sub set_reader {
 sub parse {
     my ($self) = @_;
     my $reader = $self->reader;
-    my $events = [];
-    warn __PACKAGE__.':'.__LINE__.": ========== parse()\n";
     if ($reader->can('open_handle')) {
+        my $events = [];
         if (openhandle($reader->input)) {
             my $test = YAML::LibYAML::API::XS::parse_filehandle_events($reader->open_handle, $events);
         }
         else {
             my $test = YAML::LibYAML::API::XS::parse_file_events($reader->input, $events);
         }
+        for my $info (@$events) {
+            my $name = $info->{name};
+            $self->callback->( $self, $name => $info );
+        }
+        return;
     }
     else {
-        warn __PACKAGE__.':'.__LINE__.": ========== parse string()\n";
         my $orig_cb = $self->callback;
         my $cb = sub {
             my ($event) = @_;
@@ -58,11 +61,8 @@ sub parse {
         );
         my $yaml = $reader->read;
         $parser->parse_callback($yaml);
+        $parser->parser_delete;
         return;
-    }
-    for my $info (@$events) {
-        my $name = $info->{name};
-        $self->callback->( $self, $name => $info );
     }
 }
 

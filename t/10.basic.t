@@ -22,13 +22,13 @@ EOM
 my $yp = YAML::PP::LibYAML->new;
 
 my $data = $yp->load_string($yaml);
-warn __PACKAGE__.':'.__LINE__.$".Data::Dumper->Dump([$data], ['data']);
-exit;
+
 my $expected = {
     foo => 'bar',
     k => 23,
     FOO => 'bar',
     flow => { a => 23 },
+    bool => 1,
 };
 is_deeply($data, $expected, "load_string data like expected");
 
