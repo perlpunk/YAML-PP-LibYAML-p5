@@ -18,6 +18,7 @@ sub new {
         parser => YAML::PP::LibYAML::Parser->new,
         emitter => YAML::PP::LibYAML::Emitter->new(
             indent => delete $args{indent},
+            width => delete $args{width},
         ),
         %args,
     );
